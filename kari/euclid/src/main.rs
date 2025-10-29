@@ -12,5 +12,6 @@ fn main() {
         .collect();//vecに収集
     println!("{:?}", n);
     println!("次元は{}です。", n.len());
-    euclid::gcd(n);
+    let a = euclid::gcd(n);
+    println!("最大公約数は{}です", a);
 }
