@@ -54,7 +54,7 @@ pub fn poly_warizan(a: u64, b: u64) -> (u64,u64) {
  
 pub fn inverse(a: MyNumber) -> MyNumber {
     let (mut q, mut r):(u64,u64) = (a.value as u64,IRREDUCIBLE_POLYNOMIAL);
-    (q,r) = poly_warizan(q,r);
+    (q,(_,r)) = (r,poly_warizan(q,r));
     let mut v: Vec<u64> = vec![0,1,1,q];
     while r != 0 {
         (q,(_,r)) = (r,poly_warizan(q,r));
