@@ -52,6 +52,7 @@ pub fn poly_warizan(a: u64, b: u64) -> (u64,u64) {
     return (syou,amari);      
 }
  
+ //つくりかけ
 pub fn inverse(a: MyNumber) -> MyNumber {
     let (mut q, mut r):(u64,u64) = (a.value as u64,IRREDUCIBLE_POLYNOMIAL);
     (q,(_,r)) = (r,poly_warizan(q,r));
