@@ -1,3 +1,4 @@
+use core::panic;
 use std::ops::Mul;
 //https://www.partow.net/programming/polynomials/index.html
 const IRREDUCIBLE_POLYNOMIAL: u64 = 0x1_0040_0007;
@@ -38,7 +39,7 @@ pub fn kakezan(a: u64, b: u64) -> u64 {
 }
 
 pub fn poly_warizan(a: u64, b: u64) -> (u64,u64) {
-    //aわるbのあまり,bが０でないことは検証しないから注意
+    //aわるbの商とあまり,bが０でないことは検証しないから注意
     //多項式bの最高次の次元dimを求める。
     let mut syou:u64 = 0;
     let mut amari:u64 = a;
@@ -52,19 +53,37 @@ pub fn poly_warizan(a: u64, b: u64) -> (u64,u64) {
     return (syou,amari);      
 }
  
- //つくりかけ
+ // 逆元を求める関数
 pub fn inverse(a: MyNumber) -> MyNumber {
-    let (mut q, mut r):(u64,u64) = (a.value as u64,IRREDUCIBLE_POLYNOMIAL);
-    (q,(_,r)) = (r,poly_warizan(q,r));
-    let mut v: Vec<u64> = vec![0,1,1,q];
-    while r != 0 {
-        (q,(_,r)) = (r,poly_warizan(q,r));
-        let mut temp: u64 = v[2];
-        v[2] = v[0] ^ kakezan(q,v[1]);
-        v[0] = temp;
-        temp = v[3];
-        v[3] = v[1] ^ kakezan(q,v[2]);
-        v[1] = temp;
+    if a.value == 0 {
+        panic!("0の逆元は存在しません");
     }
-    return MyNumber { value: v[0] as u32 };
+
+    let (p,a):(u64,u64) = (IRREDUCIBLE_POLYNOMIAL,a.value as u64);
+
+    let (mut b,mut c):(u64,u64) = (p,a);
+
+    let mut v: Vec<u64> = vec![1,0,0,1];
+
+    let mut q:u64;
+
+    let mut r:u64;
+
+    while c != 0 {
+        (q,r) = poly_warizan(b,c);
+        (v[0],v[1],v[2],v[3]) =
+            (v[2],v[3],
+                v[0] ^ kakezan(q,v[2]),
+                v[1] ^ kakezan(q,v[3])
+            );
+        b = c;
+        c = r;
+    }
+
+    let result =poly_warizan(v[1],IRREDUCIBLE_POLYNOMIAL).1;
+    return MyNumber { value: result as u32 };
+
+
+
+
 }
