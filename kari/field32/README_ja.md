@@ -1,17 +1,73 @@
 # field32
 
-GF(2^32)（32ビットの有限体）上での演算を実装したRustライブラリです。
+$\text{GF}(2^{32})=\mathbb{F}_{2^{32}}$（32ビットの有限体）上での演算を実装したRustライブラリです。
 
 ## 概要
 
-このライブラリは、32ビットの有限体 GF(2^32) 上での乗算と逆元計算を提供します。有限体の演算は、暗号技術やエラー訂正符号などで広く使用されています。
+このライブラリは、32ビットの有限体 $\text{GF}(2^{32})$ 上での乗算と逆元計算を提供します。有限体の演算は、暗号技術やエラー訂正符号などで広く使用されています。符号なし整数u64やu32には$2$などの逆数が存在しません。$\text{GF}(2^{32})$ではすべての逆数が存在し、除算ができます。
 
-## 有限体について
+## 代数的な知識
 
-有限体 GF(2^32) は、2^32個の要素を持つ体です。この実装では：
-- 要素は32ビットの整数として表現されます
-- 加算はXOR演算で行われます
-- 乗算は既約多項式による剰余演算で定義されます
+>### 環
+>
+>集合$R$と$0,1\in R $なるものと二つの二項演算"$+,\cdot$"が以下の公理を満た>すとき、環という。
+>
+>１．任意の$a,b,c\in R$に対して$(a+b)+c=a+(b+c)$である
+>
+>２．任意の$a\in R$に対して$a+0=0+a=a$である
+>
+>３．任意の$a\in R$に対してある$b\in R$が存在して$a+b=b+a=0$となる
+>
+>４．任意の$a,b\in R$に対して$a+b=b+a$である
+>
+>５．任意の$a,b,c\in R$に対して$(a\cdot b)\cdot c=a\cdot (b\cdot c)$である
+>
+>６．任意の$a\in R$に対して$a\cdot 1=1\cdot a=a$である
+>
+>７．任意の$a,b,c\in R$に対して$a\cdot (b+c)=a\cdot b+a\cdot c,(a+b)\cdot c=a\cdot c+b\cdot c$である
+
+基本的には"$\cdot$"は省略されることが多い。
+
+>### 可換環
+>
+>環$R$が次の公理を満たすとき可換環という。逆に以下の公理を満たさない元が存在>するときは非可換環とよばれる。
+>
+>８．任意の$a,b\in R$に対して$a\cdot b=b\cdot a$である
+
+>### 体
+>
+>可換環$R$が以下の公理を満たすとき体とよばれる。ドイツ語や英語の頭文字をとって$K$や$F$と表されることがある。
+>
+>９．任意の$a\in R$に対してある元$b\in R$が存在して$a\cdot b=b\cdot a=1$となる
+
+>### 斜体
+>
+>非可換環$R$が公理９を満たすとき$R$を斜体という。
+
+- 体の例
+
+複素数体$\mathbb{C}$，実数体$\mathbb{R}$，$\text{GF}(2^{32})$など
+
+
+- 斜体の例
+
+ハミルトンの四元数$\mathbb{H}$，一般線型群$\text{GL}(K)$など
+
+
+- 可換環の例
+
+整数環$\mathbb{Z}$，符号なし整数u64,u32など
+
+
+- 非可換環の例
+
+行列環$M_n(K)$
+
+元の個数が有限の斜体は必ず積が可換になります。
+>**Wedderburnの小定理**
+>
+>有限な斜体は可換な体である。
+
 
 ### 使用している既約多項式
 
@@ -154,3 +210,153 @@ GF(2^n)では、加算はXOR演算と等価です：
 ## ライセンス
 
 （必要に応じて追加してください）
+
+## 他
+- 逆元については以下のように求めています。
+
+まずは一般的な多項式の割り算(このときはpoly_warizan)でユークリッドの互除法をします。ただし足し算はビット演算の^で、掛け算はkakezan関数を使っています。
+
+$p\colon$既約多項式.
+
+$a\colon$逆元を求めたい数.
+
+$$
+\begin{align*}
+p&=q_1a+r_1\\
+a&=q_2r_1+r_2\\
+r_1&=q_3r_2+r_3\\
+
+&\:\:\vdots\\
+
+r_{n-3}&=q_{n-1}r_{n-2}+r_{n-1}\\
+
+r_{n-2}&=q_nr_{n-1}+r_n\\
+\end{align*}
+
+$$
+ここで$r_{n-1}=1,r_n=0$となる。行列で書くと
+
+$$
+\begin{pmatrix}
+r_{i-2}\\
+r_{i-1}
+\end{pmatrix}
+=
+\begin{pmatrix}
+q_i&1\\
+1&0
+\end{pmatrix}
+\begin{pmatrix}
+r_{i-1}\\
+r_i
+\end{pmatrix}
+$$
+
+となっている。これをつなげて書くと
+
+$$
+\begin{pmatrix}
+p\\
+a
+\end{pmatrix}
+=
+\begin{pmatrix}
+q_1&1\\
+1&0
+\end{pmatrix}
+\begin{pmatrix}
+q_2&1\\
+1&0
+\end{pmatrix}
+\cdots
+\begin{pmatrix}
+q_n&1\\
+1&0
+\end{pmatrix}
+\begin{pmatrix}
+r_{n-1}\\
+r_n
+\end{pmatrix}
+$$
+
+となる。ここに左から逆行列；
+$$
+\begin{pmatrix}
+q_i&1\\
+1&0
+\end{pmatrix}^{-1}
+=
+\begin{pmatrix}
+0&1\\
+1&q_i
+\end{pmatrix}
+$$
+
+をかけていきます。すると
+
+$$
+\begin{pmatrix}
+0&1\\
+1&q_n
+\end{pmatrix}
+\begin{pmatrix}
+0&1\\
+1&q_{n-1}
+\end{pmatrix}
+\cdots
+\begin{pmatrix}
+0&1\\
+1&q_1
+\end{pmatrix}
+\begin{pmatrix}
+p\\
+a
+\end{pmatrix}
+=
+\begin{pmatrix}
+r_{n-1}\\
+r_n
+\end{pmatrix}
+=
+\begin{pmatrix}
+1\\
+0
+\end{pmatrix}
+$$
+
+となります。コード上では
+
+$$
+\begin{pmatrix}
+0&1\\
+1&q_n
+\end{pmatrix}
+\begin{pmatrix}
+0&1\\
+1&q_{n-1}
+\end{pmatrix}
+\cdots
+\begin{pmatrix}
+0&1\\
+1&q_1
+\end{pmatrix}
+=
+\begin{pmatrix}
+v[0]&v[1]\\
+v[2]&v[3]
+\end{pmatrix}
+$$
+
+とおいています。よって
+
+$$pv[0]+av[1]=1$$
+
+となり$\text{mod}\:p$でかんがえれば
+
+$$av[1]=1$$
+
+となり$v[1]$が求める逆元となります。
+
+
+
+
