@@ -155,7 +155,7 @@ const IRREDUCIBLE_POLYNOMIAL: u64 = 0x1_0040_0007;
 ```
 
 これは 
-$x^32 + x^18 + x^2 + x + 1$ に対応する既約多項式です（[参考](https://www.partow.net/programming/polynomials/index.html)）。
+$x^{32} + x^{18} + x^2 + x + 1$ に対応する既約多項式です（[参考](https://www.partow.net/programming/polynomials/index.html)）。
 
 ## 主要な機能
 
