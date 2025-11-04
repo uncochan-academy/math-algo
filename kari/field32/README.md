@@ -25,153 +25,108 @@ every non-zero element has a multiplicative inverse, making division possible.
 ### Ring
 
 A set
-
-$$R$$
-
+$R$
 with elements
-
-$$0,1\in R$$
-
+$0,1\in R$
 and two binary operations "
-
-$$+,\cdot$$
-
+$+,\cdot$
 " satisfying the following axioms is called a ring:
 
-1. For any
-
-$$a,b,c\in R$$
-
-we have
-
-$$(a+b)+c=a+(b+c)$$
+1. For all
+$a,b,c\in R$
+,
+$(a+b)+c=a+(b+c)$
 
 (associativity of addition)
 
-2. For any
-
-$$a\in R$$
-
-we have
-
-$$a+0=0+a=a$$
+2. There exists an
+$0\in R$
+such that
+$a+0=0+a=a$
+for all
+$a\in R$
 
 (additive identity)
 
 3. For any
-
-$$a\in R$$
-
+$a\in R$
 there exists
-
-$$b\in R$$
-
+$b\in R$
 such that
-
-$$a+b=b+a=0$$
+$a+b=b+a=0$
 
 (additive inverse)
 
-4. For any
-
-$$a,b\in R$$
-
-we have
-
-$$a+b=b+a$$
+4. For all
+$a,b\in R$
+,
+$a+b=b+a$
 
 (commutativity of addition)
 
-5. For any
-
-$$a,b,c\in R$$
-
-we have
-
-$$(a\cdot b)\cdot c=a\cdot (b\cdot c)$$
+5. For all
+$a,b,c\in R$
+,
+$(a\cdot b)\cdot c=a\cdot (b\cdot c)$
 
 (associativity of multiplication)
 
-6. For any
-
-$$a\in R$$
-
-we have
-
-$$a\cdot 1=1\cdot a=a$$
+6. There exists an
+$1\in R$
+such that
+$a\cdot 1=1\cdot a=a$
+for all
+$a\in R$
 
 (multiplicative identity)
 
-7. For any
-
-$$a,b,c\in R$$
-
-we have
-
-$$a\cdot (b+c)=a\cdot b+a\cdot c,(a+b)\cdot c=a\cdot c+b\cdot c$$
+7. For all
+$a,b,c\in R$
+,
+$a\cdot (b+c)=a\cdot b+a\cdot c,(a+b)\cdot c=a\cdot c+b\cdot c$
 
 (distributivity)
 
 The "
-
-$$\cdot$$
-
+$\cdot$
 " symbol is often omitted.
 
 ### Commutative Ring
 
 A ring
-
-$$R$$
-
+$R$
 that satisfies the following axiom is called a commutative ring. Conversely, when there exists an element that does not satisfy this property, it is emphasized as a non-commutative ring.
 
-8. For any
-
-$$a,b\in R$$
-
-we have
-
-$$a\cdot b=b\cdot a$$
+8. For all
+$a,b\in R$
+,
+$a\cdot b=b\cdot a$
 
 (commutativity of multiplication)
 
 ### Field
 
 A commutative ring
-
-$$R$$
-
+$R$
 that satisfies the following axiom is called a field. It is often denoted by
-
-$$K$$
-
+$K$
 or
-
-$$F$$
-
+$F$
 taken from the first letters in German or English.
 
 9. For any non-zero
-
-$$a\in R$$
-
+$a\in R$
 there exists
-
-$$b\in R$$
-
+$b\in R$
 such that
-
-$$a\cdot b=b\cdot a=1$$
+$a\cdot b=b\cdot a=1$
 
 (multiplicative inverse)
 
 ### Division Ring (Skew Field)
 
 A non-commutative ring
-
-$$R$$
-
+$R$
 that satisfies axiom 9 is called a division ring or skew field.
 
 - **Examples of fields:**
