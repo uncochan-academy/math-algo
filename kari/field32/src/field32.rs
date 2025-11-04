@@ -27,8 +27,8 @@ pub fn create_number(value: u32) -> MyNumber {
 }
 
 pub fn kakezan(a: u64, b: u64) -> Result<u64,String> {
-    if ((a >> 32)|(b >> 32)) != 0 {
-        return Err("３２ビットまでだぞ".to_string());
+    if (a.leading_zeros() + b.leading_zeros()) < 63 {
+        return Err("オーバーフローしそう".to_string());
     }else{
         let mut result: u64 =0;
         for i in 0..64 {
@@ -79,6 +79,7 @@ pub fn inverse(a: MyNumber) -> Result<MyNumber, String> {
             (q,r) = poly_warizan(b,c).unwrap();
             (v[0],v[1],v[2],v[3]) =
                 (v[2],v[3],
+                    //このpoly_warizanはいらない可能性ある。ラメの定理よりオーバーフローしないと思うけど一応念のため。
                     poly_warizan(v[0] ^ kakezan(q,v[2]).unwrap(),IRREDUCIBLE_POLYNOMIAL).unwrap().1,
                     poly_warizan(v[1] ^ kakezan(q,v[3]).unwrap(),IRREDUCIBLE_POLYNOMIAL).unwrap().1
                 );
