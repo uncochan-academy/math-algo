@@ -315,6 +315,9 @@ $$
 $r_{n-1}=1,r_n=0$
 となる。行列で書くと
 
+<table align="center">
+<tr><td colspan="3">
+
 $$
 \begin{pmatrix}
 r_{i-2}\\
@@ -331,7 +334,13 @@ r_i
 \end{pmatrix}
 $$
 
+</td></tr>
+</table>
+
 となっている。これをつなげて書くと
+
+<table align="center">
+<tr><td colspan="3">
 
 $$
 \begin{pmatrix}
@@ -358,7 +367,14 @@ r_n
 \end{pmatrix}
 $$
 
+</td></tr>
+</table>
+
 となる。ここに左から逆行列；
+
+<table align="center">
+<tr><td colspan="3">
+
 $$
 \begin{pmatrix}
 q_i&1\\
@@ -371,7 +387,13 @@ q_i&1\\
 \end{pmatrix}
 $$
 
+</td></tr>
+</table>
+
 をかけていきます。すると
+
+<table align="center">
+<tr><td colspan="3">
 
 $$
 \begin{pmatrix}
@@ -403,7 +425,13 @@ r_n
 \end{pmatrix}
 $$
 
+</td></tr>
+</table>
+
 となります。コード上では
+
+<table align="center">
+<tr><td colspan="3">
 
 $$
 \begin{pmatrix}
@@ -425,6 +453,9 @@ v[0]&v[1]\\
 v[2]&v[3]
 \end{pmatrix}
 $$
+
+</td></tr>
+</table>
 
 とおいています。よって
 
