@@ -1,36 +1,42 @@
 mod field32;
 use field32::*;
+use std::io::{self, Write};
 
 fn main() {
-    // 32ビット以下の最大のフィボナッチ数を計算
-    let mut fib_numbers = Vec::new();
-    let mut a: u64 = 0;
-    let mut b: u64 = 1;
+    println!("数字を入力してください (0以外の32ビット整数):");
+    print!("> ");
+    io::stdout().flush().unwrap();
 
-    while b <= u32::MAX as u64 {
-        fib_numbers.push(b as u32);
-        let next = a + b;
-        a = b;
-        b = next;
-    }
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).unwrap();
 
-    println!("32ビット以下のフィボナッチ数: {} 個", fib_numbers.len());
-    println!("最大のフィボナッチ数: {}", fib_numbers.last().unwrap());
+    match input.trim().parse::<u32>() {
+        Ok(value) => {
+            let num = create_number(value);
 
-    // 最大のフィボナッチ数でテスト
-    let max_fib = *fib_numbers.last().unwrap();
-    println!("\n=== {}でテスト（最大のフィボナッチ数） ===", max_fib);
+            println!("{}",takousiki(num));
 
-    let num = create_number(max_fib);
-    let inv = inverse(num);
-    let result = num * inv;
+            match inverse(num) {
+                Ok(inv) => {
+                    let result = num * inv;
 
-    println!("inverse({}) = {}", max_fib, inv.value);
-    println!("{} * {} = {}", max_fib, inv.value, result.value);
+                    println!("\n結果:");
+                    println!("inverse({}) = {} = {}", value, inv.value, takousiki(inv));
+                    println!("{} * {} = {}", value, inv.value, result.value);
 
-    if result.value == 1 {
-        println!("✓ 成功！");
-    } else {
-        println!("✗ 失敗！");
+                    if result.value == 1 {
+                        println!("✓ 検証成功！逆元が正しく計算されました。");
+                    } else {
+                        println!("✗ 検証失敗！");
+                    }
+                }
+                Err(e) => {
+                    println!("エラー: {}", e);
+                }
+            }
+        }
+        Err(_) => {
+            println!("エラー: 有効な32ビット整数を入力してください。");
+        }
     }
 }
