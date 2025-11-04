@@ -315,147 +315,173 @@ $$
 $r_{n-1}=1,r_n=0$
 となる。行列で書くと
 
-<table align="center">
-<tr><td colspan="3">
-
-$$
-\begin{pmatrix}
-r_{i-2}\\
-r_{i-1}
-\end{pmatrix}
-=
-\begin{pmatrix}
-q_i&1\\
-1&0
-\end{pmatrix}
-\begin{pmatrix}
-r_{i-1}\\
-r_i
-\end{pmatrix}
-$$
-
-</td></tr>
+<div align="center">
+<table>
+<tr>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>r<sub>i-2</sub></td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2">&nbsp;=&nbsp;</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>q<sub>i</sub></td>
+  <td>1</td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>r<sub>i-1</sub></td>
+  <td rowspan="2">⎞<br>⎠</td>
+</tr>
+<tr>
+  <td>r<sub>i-1</sub></td>
+  <td>1</td>
+  <td>0</td>
+  <td>r<sub>i</sub></td>
+</tr>
 </table>
+</div>
 
 となっている。これをつなげて書くと
 
-<table align="center">
-<tr><td colspan="3">
-
-$$
-\begin{pmatrix}
-p\\
-a
-\end{pmatrix}
-=
-\begin{pmatrix}
-q_1&1\\
-1&0
-\end{pmatrix}
-\begin{pmatrix}
-q_2&1\\
-1&0
-\end{pmatrix}
-\cdots
-\begin{pmatrix}
-q_n&1\\
-1&0
-\end{pmatrix}
-\begin{pmatrix}
-r_{n-1}\\
-r_n
-\end{pmatrix}
-$$
-
-</td></tr>
+<div align="center">
+<table>
+<tr>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>p</td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2">&nbsp;=&nbsp;</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>q<sub>1</sub></td>
+  <td>1</td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>q<sub>2</sub></td>
+  <td>1</td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2">&nbsp;⋯&nbsp;</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>q<sub>n</sub></td>
+  <td>1</td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>r<sub>n-1</sub></td>
+  <td rowspan="2">⎞<br>⎠</td>
+</tr>
+<tr>
+  <td>a</td>
+  <td>1</td>
+  <td>0</td>
+  <td>1</td>
+  <td>0</td>
+  <td>1</td>
+  <td>0</td>
+  <td>r<sub>n</sub></td>
+</tr>
 </table>
+</div>
 
 となる。ここに左から逆行列；
 
-<table align="center">
-<tr><td colspan="3">
-
-$$
-\begin{pmatrix}
-q_i&1\\
-1&0
-\end{pmatrix}^{-1}
-=
-\begin{pmatrix}
-0&1\\
-1&q_i
-\end{pmatrix}
-$$
-
-</td></tr>
+<div align="center">
+<table>
+<tr>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>q<sub>i</sub></td>
+  <td>1</td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2"><sup>-1</sup>&nbsp;=&nbsp;</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>0</td>
+  <td>1</td>
+  <td rowspan="2">⎞<br>⎠</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td>0</td>
+  <td>1</td>
+  <td>q<sub>i</sub></td>
+</tr>
 </table>
+</div>
 
 をかけていきます。すると
 
-<table align="center">
-<tr><td colspan="3">
-
-$$
-\begin{pmatrix}
-0&1\\
-1&q_n
-\end{pmatrix}
-\begin{pmatrix}
-0&1\\
-1&q_{n-1}
-\end{pmatrix}
-\cdots
-\begin{pmatrix}
-0&1\\
-1&q_1
-\end{pmatrix}
-\begin{pmatrix}
-p\\
-a
-\end{pmatrix}
-=
-\begin{pmatrix}
-r_{n-1}\\
-r_n
-\end{pmatrix}
-=
-\begin{pmatrix}
-1\\
-0
-\end{pmatrix}
-$$
-
-</td></tr>
+<div align="center">
+<table>
+<tr>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>0</td>
+  <td>1</td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>0</td>
+  <td>1</td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2">&nbsp;⋯&nbsp;</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>0</td>
+  <td>1</td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>p</td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2">&nbsp;=&nbsp;</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>r<sub>n-1</sub></td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2">&nbsp;=&nbsp;</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>1</td>
+  <td rowspan="2">⎞<br>⎠</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td>q<sub>n</sub></td>
+  <td>1</td>
+  <td>q<sub>n-1</sub></td>
+  <td>1</td>
+  <td>q<sub>1</sub></td>
+  <td>a</td>
+  <td>r<sub>n</sub></td>
+  <td>0</td>
+</tr>
 </table>
+</div>
 
 となります。コード上では
 
-<table align="center">
-<tr><td colspan="3">
-
-$$
-\begin{pmatrix}
-0&1\\
-1&q_n
-\end{pmatrix}
-\begin{pmatrix}
-0&1\\
-1&q_{n-1}
-\end{pmatrix}
-\cdots
-\begin{pmatrix}
-0&1\\
-1&q_1
-\end{pmatrix}
-=
-\begin{pmatrix}
-v[0]&v[1]\\
-v[2]&v[3]
-\end{pmatrix}
-$$
-
-</td></tr>
+<div align="center">
+<table>
+<tr>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>0</td>
+  <td>1</td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>0</td>
+  <td>1</td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2">&nbsp;⋯&nbsp;</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>0</td>
+  <td>1</td>
+  <td rowspan="2">⎞<br>⎠</td>
+  <td rowspan="2">&nbsp;=&nbsp;</td>
+  <td rowspan="2">⎛<br>⎝</td>
+  <td>v[0]</td>
+  <td>v[1]</td>
+  <td rowspan="2">⎞<br>⎠</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td>q<sub>n</sub></td>
+  <td>1</td>
+  <td>q<sub>n-1</sub></td>
+  <td>1</td>
+  <td>q<sub>1</sub></td>
+  <td>v[2]</td>
+  <td>v[3]</td>
+</tr>
 </table>
+</div>
 
 とおいています。よって
 
