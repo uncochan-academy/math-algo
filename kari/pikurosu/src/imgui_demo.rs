@@ -1,6 +1,3 @@
-mod calculator;
-use calculator::Calculator;
-
 mod field32;
 use field32::*;
 
@@ -43,7 +40,6 @@ fn main() {
     let mut renderer = imgui_glium_renderer::Renderer::init(&mut imgui, &display)
         .expect("Failed to initialize renderer");
     let mut last_frame = Instant::now();
-    let mut calculator = Calculator::new();
     event_loop.run(move |event, _, control_flow| {
         match event {
             Event::WindowEvent {
@@ -51,9 +47,7 @@ fn main() {
             } => *control_flow = ControlFlow::Exit,
             Event::RedrawRequested(_) => {
                 let ui = imgui.frame();
-                //ui.show_demo_window(&mut true);
-
-                calculator.render(&ui);
+                ui.show_demo_window(&mut true);
 
                 let mut target = display.draw();
                 target.clear_color_srgb(0.1, 0.1, 0.1, 1.0);
