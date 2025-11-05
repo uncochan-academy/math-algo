@@ -97,6 +97,9 @@ impl Calculator {
                 }
                 if ui.button_with_size("C", BTN_SIZE) {
                     //クリアボタンが押されたときの処理
+                    self.display = None;
+                    self.calculation = None;
+                    self.error_message = None;
                     println!("クリアボタンが押されました！");
                 }
                 ui.same_line();
