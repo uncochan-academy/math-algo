@@ -1,6 +1,7 @@
 pub struct Calculator {
     pub opened: bool,
     display: Option<String>,
+    calculation: Option<String>,
     error_message: Option<String>,
 }
 
@@ -9,6 +10,7 @@ impl Calculator {
          Calculator {
             opened: true,
             display: None,
+            calculation: None,
             error_message: None,
         }
     }
