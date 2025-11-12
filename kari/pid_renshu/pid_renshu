@@ -1,0 +1,65 @@
+const int LED_PIN = 9;
+const int PHOTO_PIN = A0;
+
+float Kp = 0.1; //比例制御
+float Ki = 0.1; //積分制御
+float Kd = 0.01; //微分制御
+
+int target = 800;  // 目標の明るさ
+
+float integral = 0;
+float lastError = 0;
+unsigned long lastTime = 0;
+
+
+void setup() {
+  pinMode(LED_PIN, OUTPUT);
+  Serial.begin(9600);
+  Serial.println("PID制御開始");
+}
+
+void loop() {
+  unsigned long now = millis();
+  float deltaTime = (now - lastTime)/1000.0;
+  lastTime = now;
+
+  int brightness = analogRead(PHOTO_PIN);
+  int error = target - brightness;
+
+  //比例制御
+  float P = Kp * error;
+
+  //積分制御
+  integral += error * deltaTime;
+  integral = constrain(integral, -1000, 1000);
+  float I = Ki * integral;
+  
+  //微分制御
+  float D = 0;
+  if (deltaTime > 0) {
+    float derivative = (error - lastError) / deltaTime;
+    D = Kd * derivative;
+  }
+
+  float output = P + I + D;
+  output = constrain(output, 0, 255);
+
+
+  
+  analogWrite(LED_PIN, (int)output);
+  
+  Serial.print("明るさ:");
+  Serial.print(brightness);
+  Serial.print(" 誤差:");
+  Serial.print(error);
+  Serial.print(" P:");
+  Serial.print(P);
+  Serial.print(" I:");
+  Serial.print(I);
+  Serial.print(" D:");
+  Serial.print(D);
+  Serial.print(" 出力:");
+  Serial.println(output);
+  
+  delay(100);
+}
