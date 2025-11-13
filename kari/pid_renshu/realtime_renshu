@@ -1,0 +1,96 @@
+const int redPin = 13;
+const int yellowPin = 12;
+const int bluePin = 11;
+const int buttonPin = 7;
+
+unsigned long previousMillis = 0;
+int signalState = 0; //０が青
+const long blueTime = 5000;
+const long yellowTime = 2000;
+const long redTime = 5000;
+
+int lastButtonState = HIGH;
+//下二つはチャタリング対策lastdebounceTimeでおした時間
+unsigned long lastDebounceTime = 0;
+const unsigned long debounceDelay = 50;
+
+
+//歩行者がわたりたいかどうか
+bool pedestrianRequest = false;
+
+void setup() {
+  pinMode(redPin, OUTPUT);
+  pinMode(yellowPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+  pinMode(buttonPin, INPUT_PULLUP);
+
+  Serial.begin(9600);
+  Serial.println("信号シミュレーター開始");
+}
+
+void loop() {
+  //時刻を保持
+  unsigned long currentMillis = millis();
+  //ボタンの状態を確認
+  int reading = digitalRead(buttonPin);
+
+
+  /*
+  unsigned long currentMillis = millis();
+  int reading = digitalRead(buttonPin);
+
+  if(reading != lastButtonState) {
+    lastDebounceTime = currentMillis;
+  }
+
+  if((currentMillis - lastDebounceTime) > debounceDelay) {
+    if(reading == LOW && !pedestrianRequest) {
+      pedestrianRequest = true;
+      Serial.println("歩行者ボタンが押されました");
+    }
+  }
+
+  lastButtonState = reading;
+
+  long interval;
+  switch(signalState) {
+    case 0: interval = blueTime; break;
+    case 1: interval = yellowTime; break;
+    case 2: interval = redTime; break;
+  }
+
+  if(currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+
+    signalState++;
+    if(signalState > 2) signalState = 0;
+
+    if(signalState == 2 && pedestrianRequest) {
+      Serial.println("歩行者用信号：青");
+      pedestrianRequest = false;
+    }
+    updateSignal();
+  }
+  */
+}
+
+void updateSignal() {
+  digitalWrite(redPin, LOW);
+  digitalWrite(yellowPin, LOW);
+  digitalWrite(bluePin, LOW);
+
+  switch(signalState) {
+    case 0:
+      digitalWrite(bluePin, HIGH);
+      Serial.println("信号：青");
+    break;
+    case 1:
+      digitalWrite(yellowPin, HIGH);
+      Serial.println("信号：黄");
+    break;
+    case 2:
+      digitalWrite(redPin, HIGH);
+      Serial.println("信号：赤");
+    break;
+  }
+}
