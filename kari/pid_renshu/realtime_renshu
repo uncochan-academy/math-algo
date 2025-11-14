@@ -1,13 +1,24 @@
-const int redPin = 13;
+//LEDの色が違うと抵抗値もちがうので注意
+
+onst int redPin = 13;
 const int yellowPin = 12;
 const int bluePin = 11;
 const int buttonPin = 7;
+const int pedestrianRedPin = 8;
+const int pedestrianGreenPin = 9;
 
 unsigned long previousMillis = 0;
+unsigned long blinkMillis = 0;  // 点滅用タイマー
 int signalState = 0; //０が青
+int pedestrianButtonTime = 0;
 const long blueTime = 5000;
 const long yellowTime = 2000;
-const long redTime = 5000;
+const long allRedTime = 1000;  // 全赤の時間
+const long pedestrianGreenTime = 5000;  // 歩行者青（点灯）
+const long pedestrianBlinkTime = 5000;  // 歩行者青（点滅）
+const long blinkInterval = 400;  // 点滅間隔
+const long pedestrianButtonDelay = 5000;
+bool blinkState = false;  // 点滅の状態
 
 int lastButtonState = HIGH;
 //下二つはチャタリング対策lastdebounceTimeでおした時間
@@ -23,20 +34,18 @@ void setup() {
   pinMode(yellowPin, OUTPUT);
   pinMode(bluePin, OUTPUT);
   pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(pedestrianRedPin, OUTPUT);
+  pinMode(pedestrianGreenPin, OUTPUT);
 
   Serial.begin(9600);
   Serial.println("信号シミュレーター開始");
+  updateSignal();
 }
 
 void loop() {
   //時刻を保持
   unsigned long currentMillis = millis();
   //ボタンの状態を確認
-  int reading = digitalRead(buttonPin);
-
-
-  /*
-  unsigned long currentMillis = millis();
   int reading = digitalRead(buttonPin);
 
   if(reading != lastButtonState) {
@@ -47,50 +56,86 @@ void loop() {
     if(reading == LOW && !pedestrianRequest) {
       pedestrianRequest = true;
       Serial.println("歩行者ボタンが押されました");
+      pedestrianButtonTime = currentMillis;
     }
   }
 
   lastButtonState = reading;
 
+  // 点滅処理（状態4の時のみ）
+  if(signalState == 4) {
+    if((currentMillis - blinkMillis) >= blinkInterval) {
+      blinkState = !blinkState;
+      blinkMillis = currentMillis;
+      digitalWrite(pedestrianGreenPin, blinkState ? HIGH : LOW);
+    }
+  }
+
   long interval;
   switch(signalState) {
     case 0: interval = blueTime; break;
     case 1: interval = yellowTime; break;
-    case 2: interval = redTime; break;
+    case 2: interval = allRedTime; break;
+    case 3: interval = pedestrianGreenTime; break;
+    case 4: interval = pedestrianBlinkTime; break;
+    case 5: interval = allRedTime; break;
   }
 
-  if(currentMillis - previousMillis >= interval) {
-    previousMillis = currentMillis;
+  if(pedestrianRequest && (currentMillis - pedestrianButtonTime) > pedestrianButtonDelay) {
 
-    signalState++;
-    if(signalState > 2) signalState = 0;
+    if((currentMillis - previousMillis) > interval) {
+      previousMillis = currentMillis;
 
-    if(signalState == 2 && pedestrianRequest) {
-      Serial.println("歩行者用信号：青");
-      pedestrianRequest = false;
+      signalState++;
+      if(signalState > 5) {
+        signalState = 0;
+        pedestrianRequest = false;
+      }
+      updateSignal();
     }
-    updateSignal();
   }
-  */
 }
 
 void updateSignal() {
+  // 全消灯
   digitalWrite(redPin, LOW);
   digitalWrite(yellowPin, LOW);
   digitalWrite(bluePin, LOW);
+  digitalWrite(pedestrianRedPin, LOW);
+  digitalWrite(pedestrianGreenPin, LOW);
 
   switch(signalState) {
-    case 0:
+    case 0:  // 車: 青 / 歩行者: 赤
       digitalWrite(bluePin, HIGH);
-      Serial.println("信号：青");
-    break;
-    case 1:
+      digitalWrite(pedestrianRedPin, HIGH);
+      Serial.println("車: 青 / 歩行者: 赤");
+      break;
+    case 1:  // 車: 黄 / 歩行者: 赤
       digitalWrite(yellowPin, HIGH);
-      Serial.println("信号：黄");
-    break;
-    case 2:
+      digitalWrite(pedestrianRedPin, HIGH);
+      Serial.println("車: 黄 / 歩行者: 赤");
+      break;
+    case 2:  // 全赤
       digitalWrite(redPin, HIGH);
-      Serial.println("信号：赤");
-    break;
+      digitalWrite(pedestrianRedPin, HIGH);
+      Serial.println("車: 赤 / 歩行者: 赤 (全赤1)");
+      break;
+    case 3:  // 車: 赤 / 歩行者: 青（点灯）
+      digitalWrite(redPin, HIGH);
+      digitalWrite(pedestrianGreenPin, HIGH);
+      Serial.println("車: 赤 / 歩行者: 青");
+      break;
+    case 4:  // 車: 赤 / 歩行者: 青（点滅）
+      digitalWrite(redPin, HIGH);
+      blinkMillis = millis();  // 点滅タイマーリセット
+      blinkState = true;
+      digitalWrite(pedestrianGreenPin, HIGH);
+      Serial.println("車: 赤 / 歩行者: 青点滅");
+      break;
+    case 5:  // 全赤
+      digitalWrite(redPin, HIGH);
+      digitalWrite(pedestrianRedPin, HIGH);
+      Serial.println("車: 赤 / 歩行者: 赤 (全赤2)");
+      break;
   }
 }
