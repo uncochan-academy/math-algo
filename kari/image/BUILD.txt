@@ -1,0 +1,39 @@
+====================================
+  ビルド方法（開発者向け）
+====================================
+
+【必要なファイル】
+- face_recognition_app.py : メインプログラム
+- FaceRecognition.spec : PyInstallerビルド設定
+- README.txt : 使い方（エンドユーザー向け）
+
+【ビルド環境の準備】
+
+1. Python 3.13をインストール
+   https://www.python.org/
+
+2. 必要なパッケージをインストール
+   pip install opencv-contrib-python numpy pyinstaller
+
+【ビルド手順】
+
+1. ソースコードを配置
+   3つのファイルを同じフォルダに配置
+
+2. コマンドプロンプトでフォルダに移動
+   cd (ファイルを配置したフォルダ)
+
+3. ビルド実行
+   python -m PyInstaller --clean FaceRecognition.spec
+
+4. 完成
+   dist/FaceRecognition.exe が生成される
+
+【配布方法】
+dist/フォルダ内の以下を配布
+- FaceRecognition.exe
+- README.txt
+
+【テスト実行】
+Pythonから直接実行する場合：
+python face_recognition_app.py
